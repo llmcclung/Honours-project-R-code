@@ -1,0 +1,20 @@
+Diversity <-read.csv("Species diversity.csv")
+str(Diversity)
+Diversity$Date<-as.Date(Diversity$Date, "%d/%m/%Y")
+Diversity$PercentageS<-as.integer(Diversity$PercentageS)
+plot(Date, No..species)
+Diversity$PercentageS<-as.
+
+ggplot(data=Diversity, aes(x=Date, y=No..species)) +
+  geom_col()
+
+ggplot(data=Diversity, aes(x=Date, y=No..speies))
+summary(Diversity)
+
+ggplot(data=Diversity, aes(x=Species, y=PercentageS)) +
+  geom_point()
+
+ggplot(data=Diversity, aes(x=Species, y=Percentage)) +
+  geom_boxplot() +
+  ylab("Proportion of each species found the FEC") +
+  facet_grid(rows = vars(Date))
