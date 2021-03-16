@@ -1,0 +1,37 @@
+Soil<-read.csv("Soil Temperature.csv")
+Soils<-read.csv("COSMOS-UK_EASTB_HydroSoil_SH_2016-2017.csv")
+str(Soil)
+attach(Soil)
+Soil$Date<-as.Date(Soil$Date, "%d/%m/%Y")
+p1 <- ggplot(data=Soil, aes(x=Date, y=STP_TSOIL2)) +
+  geom_line() +
+  geom_smooth(model=lm)
+ggplot(data=Soil, aes(x=Date, y=PRECIP)) +
+  geom_line() +
+  geom_smooth(model=lm)
+p2 <- ggplot(data=Soil, aes(x=Date, y=COSMOS_VWC)) +
+  geom_line() +
+  geom_smooth()
+
+install.packages("reshape2")
+install.packages("grid")
+
+ggplot(data=Soil, aes(x=Date)) +
+  geom_line(aes(y=STP_TSOIL2), size=1, color = "red") +
+  geom_line(aes(y=COSMOS_VWC-25), size=1, color= "#000099", linetype="twodash") +
+  scale_y_continuous(name = "Soil Temperature at 2cm (oC)", sec.axis = sec_axis(~.+25, name="Volumetric Water Content (%)")) +
+  scale_x_date(labels = date_format("%m/%y"),
+               breaks = date_breaks("4 weeks"))
+
+ggplot(data=Soil, aes(x=Date)) +
+  geom_line(aes(y=STP_TSOIL2), size=1, color = "red", linetype="twodash") +
+  geom_line(aes(y=PRECIP*15), size=1, color= "#000099", alpha=0.7) +
+  scale_y_continuous(name = "Soil Temperature at 2cm", sec.axis = sec_axis(~./15, name="Precipitation (mm)")) +
+  scale_x_date(labels = date_format("%d/%m/%y"),
+               breaks = date_breaks("4 weeks")) +
+  theme(axis.text.x = element_text(angle = 90))
+
+model1 <-glm(STP_TSOIL2 ~ COSMOS_VWC, data=Soil)
+summary(model1)  
+
+model1 <-glm(STP_TSOIL2 ~ PRECIP, data=Soil)
