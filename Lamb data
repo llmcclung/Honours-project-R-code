@@ -1,0 +1,208 @@
+Lamb <- read.csv("Lamb Strongly count.csv")
+attach(Lamb)
+str(Lamb)
+Lamb$Date<-as.Date(Lamb$Date, "%d/%m/%Y")
+summary(Lamb)
+install.packages("patchwork")
+library(patchwork)
+
+Mod <- glm(Nematodirus.epg ~ TS2 + Coccidiosis + COSMOS_VWC + Days.after.treamtment.Nem, family = poisson, data=Lamb)
+summary(Mod)
+
+dispersiontest(Mod)
+
+plot(Nematodirus.epg, Date)
+plot(TS22, Nematodirus.epg)
+plot(TS22, Strongyle.epg)
+plot(Days.after.treamtment.Nem, Nematodirus.epg)
+
+Lamb$Days.after.treamtment.Nem<- as.factor(Lamb$Days.after.treamtment.Nem)
+
+ggplot(data=Lamb, aes(x=Days.after.treamtment.Nem, y=Nematodirus.epg, group=Days.after.treamtment.Nem)) +
+  geom_boxplot() +
+  xlab("Days after BZ first treatment") +
+  ylab("Nematodirus (epg)")
+  
+model1 <- glm.nb(Nematodirus.epg ~ Days.after.treamtment.Nem, data=Lamb)
+summary(model1)
+
+ggplot(data=Lamb, aes(x=Days.after.treamtment.Nem, y=Strongyle.epg, group=Days.after.treamtment.Nem)) +
+  geom_boxplot() + 
+  xlab("Days since treatment") +
+  ylab("Strongyle FEC (epg)") +
+  labs(title="Lamb Strongyle FEC against days since anthelmintic treatment")
+
+ggplot(data=Lamb, aes(x=Date, y=Nematodirus.epg, group = Date)) +
+  geom_boxplot() +
+  ylab("Nematodirus FEC (epg)") +
+  xlab("Date") +
+  labs(title="Lambs Nematodirus FEC") +
+  scale_x_date(labels = date_format("%m/%y"),
+               breaks = date_breaks("4 weeks"))
+
+ggplot(data=Lamb, aes(x=TS2, y = Nematodirus.epg) +
+    geom_point()
+    
+plot(TS2, Nematodirus.epg)
+plot(COSMOS_VWC, Nematodirus.epg)
+plot(PR, Nematodirus.epg)
+plot(Coccidiosis, Nematodirus.epg)
+
+ggplot(data=Lamb, aes(x=Coccidiosis, y=Nematodirus.epg)) +
+  geom_boxplot()
+
+ggplot(data=Lamb, aes(x=Date, group = Date)) +
+  geom_boxplot(aes(y=Nematodirus.epg)) +
+  geom_point(aes(y=TS2)) +
+  scale_y_continuous(name = "TS2", sec.axis = sec_axis(~.TS2, name="TS2"))
+
+plot(PR, Strongyle.epg)
+
+hist(Lamb$Nematodirus.epg)
+str(Lamb)
+
+model1 <- glm.nb(Nematodirus.epg ~ TS2 + COSMOS_VWC + Coccidiosis + Days.after.treamtment.Nem + Treated.N, data = Lamb)
+summary(model1)
+
+model2 <- glm.nb(Nematodirus.epg ~ Treated.N, data= Lamb)
+summary(model2)
+
+model2 <- glm.nb(Nematodirus.epg ~ TS2 + Days.after.treamtment.Nem, data = Lamb)
+logLik(model1)
+logLik(model2)
+warnings()
+model2 <- glm.nb(Nematodirus.epg ~ TS2 + COSMOS_VWC, data = Lamb)
+summary(model2)
+
+model3 <- glm.nb(Nematodirus.epg ~ Days.after.treamtment.Nem + Treated.N + Coccidiosis, data = Lamb)
+summary(model3)
+
+model5 <- glm.nb(Nematodirus.epg ~ Coccidiosis + Treated.N, data=Lamb)
+
+lrtest(model1, model2)
+
+lrtest(model5, model3)
+
+model4 <- glm.nb(Nematodirus.epg ~ Days.after.treamtment.Nem + Coccidiosis + TS2 + COSMOS_VWC, data = Lamb)
+
+#Nematodirus
+
+model1 <- glm.nb(Nematodirus.epg ~ Treated.N + Days.after.treamtment.Nem + Coccidiosis, data=Lamb)
+summary(model1)
+
+model2 <- glm.nb(Nematodirus.epg ~ Treated.N + Coccidiosis, data=Lamb)
+
+
+lrtest(model1, model2)
+
+
+ggplot(data=Lamb, aes(x=Treated.N, y=Nematodirus.epg, group = Treated.N)) +
+  geom_boxplot()
+
+model1 <- glm.nb(Nematodirus.epg ~ Treated.N, data=Lamb)
+summary(model1)
+
+LambD <- read.csv("Lamb Strongly count Dup.csv")
+ggplot(data=LambD, aes(x= Days.after.treamtment.Nem, y= Nematodirus.epg, group = Days.after.treamtment.Nem)) +
+  geom_boxplot(width=2) +
+  xlab("Days since treatment") +
+  ylab("Nematodirus epg") +
+  labs(title="Lambs nematodirus count against days since anthelmintic treatment")
+
+#Nematodirus Lmab data analysis
+
+model1 <- glm.nb(Nematodirus.epg ~ Average.PR, data=Lamb)
+summary(model1)
+
+model2 <- glm.nb(Nematodirus.epg ~ Average.PR + Average.TS2, data=Lamb)
+summary(model2)
+
+model3 <- glm.nb(Nematodirus.epg ~ Average.PR + Average.TS2 + Coccidiosis, data=Lamb)
+summary(model3)
+
+model4 <- glm.nb(Nematodirus.epg ~ Average.PR + Average.TS2 + Days.after.treamtment.Nem + Coccidiosis, data=Lamb)
+summary(model4)
+
+model5 <- glm.nb(Nematodirus.epg ~ Average.PR + Average.TS2 + Days.after.treamtment.Nem + Coccidiosis + Treated.N, data=Lamb)
+summary(model5)
+
+model6 <- glm.nb(Nematodirus.epg ~ Average.PR + Average.TS2, data=Data)
+summary(model6)
+
+lrtest(model1, model2)
+lrtest(model2, model3)
+lrtest(model3, model4) 
+lrtest(model4, model5)
+lrtest(model5, model1)
+
+#Data analysis
+model1 <- glm.nb(Strongyle.epg ~ Days.after.treamtment.Nem + Coccidiosis, data=Lamb)
+summary(model1)
+
+model2 <- glm.nb(Strongyle.epg ~ Days.after.treamtment.Nem, data=Lamb)
+summary(model2)
+
+model3 <- glm.nb(Strongyle.epg ~ DaysT + Average.TS2, data=Lamb)
+summary(model3)
+
+model4 <- glm.nb(Strongyle.epg ~ Average.PR + Average.TS2, data=Lamb)
+summary(model4)
+
+model5 <- glm.nb(Strongyle.epg ~ DaysT + Average.PR + Average.TS2, data=Lamb)
+summary(model5)
+
+model6 <- glm.nb(Strongyle.epg ~ Treated + Average.TS2, data=Lamb)
+
+lrtest(model1, model2)
+lrtest(model1, model3)
+lrtest(model1, model4)
+lrtest(model1, model5)
+lrtest(model1, model6)
+lrtest(model1, model7)
+
+#Data analysis
+
+
+
+str(LambD)
+model1 <- glm.nb(Nematodirus.epg ~ Days.after.treamtment.Nem, data= LambD)
+summary(model1)
+
+install.packages("gridExtra")
+g1 <- ggplot(data= Lamb, aes(x=TS2, y= Nematodirus.epg)) +
+  geom_point()
+g2 <- ggplot(data= Lamb, aes(x=COSMOS_VWC, y=Nematodirus.epg)) +
+  geom_point()
+
+grid.arrange(g1, g2,nrow = 2,ncol=1)
+?grid.arrange
+
+ggplot(data = Lamb, aes(x=Date, y=Strongyle.epg, group = Date)) +
+  geom_boxplot()
+
+ggplot(data = Lamb, aes(x=Days.after.treamtment.Nem, y=Strongyle.epg, group = Days.after.treamtment.Nem)) +
+  geom_boxplot()
+
+plot(TS2, Strongyle.epg)
+plot(COSMOS_VWC, Strongyle.epg)
+
+ggplot(data=Lamb, aes(x=COSMOS_VWC, y=Strongyle.epg)) +
+  geom_point()
+
+model1 <- glm.nb(Strongyle.epg ~ Days.after.treamtment.Nem +, data=Lamb)
+summary(model1)
+
+model2 <- glm.nb(Strongyle.epg ~ TS2, data=Lamb)
+summary(model2)
+
+model3 <- glm.nb(Strongyle.epg ~ Coccidiosis + COSMOS_VWC + TS2, data=Lamb)
+summary(model3)
+
+model4 <- glm.nb(Strongyle.epg ~ TS2 + Days.after.treamtment.Nem + COSMOS_VWC + Coccidiosis, data=Lamb)
+summary(model4)
+
+model0 <- glm.nb(Strongyle.epg ~ 1, data=Lamb)
+lrtest(model0, model2)
+
+model1 <- glm.nb(Nematodirus.epg ~ Days.after.treamtment.Nem * Treated.N, data=Lamb )
+summary(model1)
