@@ -1,0 +1,155 @@
+Data <- read.csv("Combined data.csv")
+str(Data)
+attach(Data)
+plot(Strongyle.epg, TS2)
+plot(TS2, Strongyle.epg)
+plot(TS2, Nematodirus.epg)
+plot(COSMOS_VWC, Strongyle.epg)
+plot(COSMOS_VWC, Nematodirus.epg)
+plot(Age, Strongyle.epg, color = TS2)
+plot(TS2, Strongyle.epg, color = Age)
+library(ggplot2)
+
+install.packages("tidyverse")
+install.packages("faraway")
+library(faraway)
+install.packages("AER")
+library(AER)
+Mod <- glm(Nematodirus.epg ~ Age + TS2 + Coccidiosis + COSMOS_VWC + DaysT, family = poisson, data=Data)
+summary(Mod)
+
+dispersiontest(Mod)
+summary(Mod,dispersion = dp)
+
+qpoi_Mod <- glm(Strongyle.epg ~ Age + TS2 + Coccidiosis + COSMOS_VWC + DaysT, family = quasipoisson, data=Data)
+summary(qpoi_Mod)
+
+nb_Mod <- glm.nb(Strongyle.epg ~ Age + TS2 + Coccidiosis + COSMOS_VWC + DaysT, data=Data)
+summary(nb_Mod)
+
+ggplot(data = Data, aes(x=TS2, y= Strongyle.epg, color= Age)) +
+  geom_point()
+
+library(tidyverse)
+
+plot(Coccidiosis, Strongyle.epg)
+plot(Coccidiosis, Nematodirus.epg)
+
+ggplot(data = Data, aes(x=Date, y=Strongyle.epg)) +
+  geom_point()
+
+Data$Date<-as.Date(Data$Date, "%d/%m/%Y")
+
+plot(Strongyle.epg, Nematodirus.epg)
+
+ggplot(data=Data, aes(x=Strongyle.epg, y=Nematodirus.epg))+
+  geom_point() +
+  geom_smooth(method=lm, se =FALSE)
+
+model1 <- glm(TS2 ~ Strongyle.epg, quasipoisson)
+summary(model1)
+model1$coefficients 
+
+ggplot(data = Data, aes(x=Date, y = Nematodirus.epg, color = Age)) +
+  geom_point() +
+  scale_x_date(date_breaks = "1 month", date_labels="%b")
+
+facet_grid
+
+model1 <- glm.nb
+
+grid.arrange(g1, g2,nrow = 2,ncol=1)
+
+ggplot(data=Data, aes(x=Date, y=Strongyle.epg, group = Date)) +
+  geom_boxplot(width=4) +
+  facet_grid(rows = vars(Age), scales = "free") +
+  scale_x_date(labels = date_format("%m/%y"),
+               breaks = date_breaks("4 weeks"))
+  
+
+plot(Age, Strongyle.epg, data=Data)
+model1<- glm.nb(Strongyle.epg ~ Age, data=Data)
+summary(model1)<- glm.nb(data=Data, Strongyle.epg ~ Age + TS2 + Coccidiosis + COSMOS_VWC + DaysT + Nematodirus.epg)
+summary(model1)
+
+ggplot(data=Data, aes(x=TS2, y=Strongyle.epg, color=Age)) +
+  geom_point()
+
+ggplot(data=Data, aes(x=Date, y=TS2)) +
+  geom_point()
+
+model1 <- (Strongyle.epg ~ TS2 + COSMOS_VWC + TS2*COSMOS_VWC)
+summary(model1)
+
+ggplot(data=Data, aes(x=COSMOS_VWC, y=Strongyle.epg, color=Age)) +
+  geom_point()
+
+model1 <- glm.nb(Strongyle.epg ~ COSMOS_VWC * TS2, data=Data)
+summary(model1)
+
+ggplot(data=Data, aes(x=PR, y=Strongyle.epg, color=Age)) +
+  geom_point()
+
+model1 <- glm.nb(Strongyle.epg ~ Nematodirus.epg, data=Data)
+summary(model1)
+
+
+
+modela <- glm.nb(Strongyle.epg ~ Age + TS2 + COSMOS_VWC + PR + TS2 * COSMOS_VWC, data=Data)
+summary(modela)
+
+modelb <- glm.nb(Strongyle.epg ~ Age + TS2 + COSMOS_VWC + COSMOS_VWC*TS2 + Coccidiosis, data=Data)
+summary(modelb)
+
+lrtest(modela, modelb)
+
+modelc <- glm.nb(Strongyle.epg ~ Age + TS2 + PR, data=Data)
+
+modeld <- glm.nb(Strongyle.epg ~ COSMOS_VWC, data=Data)
+summary(modeld)
+
+
+
+
+#Ask Dan about how this best fit works (How to add in interactions as well)
+
+model5 <- glm.nb(Strongyle.epg ~ DaysT + Age, data=Data)
+summary(model5)
+
+model3 <- glm.nb(Strongyle.epg ~ Age + DaysT + Treated, data=Data)
+summary(model3)
+
+model1 <- glm.nb(Strongyle.epg ~ Age, data=Data)
+summary(model1)
+
+model2 <- glm.nb(Strongyle.epg ~ Age + Average.PR, data=Data)
+summary(model2)
+
+
+
+model4 <- glm.nb(Strongyle.epg ~ Age + Average.PR + DaysT, data=Data)
+summary(model4)
+
+
+
+model9 <- glm.nb(Strongyle.epg ~ Age + Average.PR + Average.TS2 + DaysT + Average.PR*Average.TS2 + Treated, data=Data)
+summary(model9)
+
+model6 <- glm.nb(Strongyle.epg ~ Average.PR + Average.TS2, data=Data)
+summary(model6)
+
+model7 <- glm.nb(Strongyle.epg ~ Age + Average.PR + Average.TS2 + Coccidiosis, data=Data)
+summary(model7)
+
+model8 <- glm.nb(Strongyle.epg ~ DaysT + Age, data=Data)
+summary(model8)
+
+lrtest(model1, model2)
+lrtest(model2, model3)
+lrtest(model3, model4)
+lrtest(model4, model5)
+lrtest(model5, model3)
+lrtest(model7, model5)
+lrtest(model8, model1)
+lrtest(model9, model3)
+#How to report this data in my results and what to comment on. How to change the lognarithimic back.
