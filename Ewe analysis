@@ -1,0 +1,200 @@
+Ewe<-read.csv("Ewe fecal egg count.csv")
+attach(Ewe)
+install.packages("ggplot2")
+install.packages("MASS")
+str(Ewe)
+summary(Ewe)
+Ewe$DaysT <- as.factor(Ewe$DaysT)
+Ewe$Date.<-as.Date(Ewe$Date., "%d/%m/%Y")
+model1 <- glm(Strongyle.epg~1, family=poisson)
+summary(model1)
+model2 <- glm(Strongyle.epg~TS2, family=poisson)
+summary(model2)
+logLik(model1)
+logLik(model2)
+DeltaLL=2*(-32116.44--34316.6)
+DeltaLL
+1-pchisq(DeltaLL, 1)
+
+ggplot(data=Ewe, aes(x=DaysT, y=Strongyle.epg)) +
+  geom_boxplot()
+
+var(Strongyle.epg)
+mean(Strongyle.epg)
+
+plot(Strongyle.epg, DaysT)
+modela <- glm(Strongyle.epg~DaysT, family = poisson)
+summary(modela)
+
+plot(Strongyle.epg, Treated)
+modelb <- glm(Strongyle.epg~Treated, family = poisson)
+summary(modelb)
+
+EweN <- Ewe(c("Strongyle.epg", "DaysT"))
+identify(Strongyle.epg, TS2)
+maxDaysT <-max(DaysT)
+minDaysT <-minDaysT
+x= minburden:maxburden
+yfitted= exp(1.444-6.391e-05 * x)
+
+modelA <- glm.nb(Strongyle.epg ~ Treated, data=Ewe)
+summary(modelA)
+
+ggplot(data=Ewe, aes(x=DaysT, y=Strongyle.epg, group = DaysT)) +
+  geom_jitter()
+
+plot(Treated, Strongyle.epg)
+ggplot(data=EweD, aes(x=Treated, y=Strongyle.epg)) +
+  geom_boxplot() +
+  xlab("Days since treatment") +
+  ylab("Strongyle (epg)") +
+  labs(title="Ewe strongyle FEC ")
+
+hist(Ewe$Strongyle.epg)
+plot(Strongyle.epg, DaysT)
+
+model1 <- glm.nb(Strongyle.epg~DaysT)
+summary(model1)
+
+install.packages("lme4",repos="http://r-forge.r-project.org")
+install.packages("Matrix")
+library(Matrix)
+install.packages("lme4")
+library(lme4)
+install.packages("MASS")
+library(MASS)
+install.packages(tidyverse)
+install.packages("lmtest")
+library(lmtest)
+install.packages("zoo")
+library("zoo")
+
+plot(PR, Strongyle.epg)
+
+plot(Strongyle.epg, DaysT)
+model1 <- glm.nb(Strongyle.epg~DaysT)
+summary(model1)
+
+model2 <- glm.nb(Strongyle.epg~Treated, data=Ewe)
+summary(model2)
+
+model3 <- glm.nb(Strongyle.epg~DaysT + Treated + TS2 + COSMOS_VWC)
+summary(model3)
+
+myvars <- names(Ewe) %in% c("N")
+newdata <- Ewe[!myvars]
+summary(newdata)
+
+model4 <- glm.nb(Strongyle.epg~TS2 + COSMOS_VWC)
+summary(model4)
+
+model0 <- glm.nb(Strongyle.epg~1)
+summary(model0)
+logLik(model0)
+
+model5 <- glm.nb(Strongyle.epg ~ TS2 + COSMOS_VWC + DaysT + Treated + Coccidiosis + PR, Ewe)
+summary(model5)
+
+model6 <- glm.nb(Strongyle.epg ~ TS2 + COSMOS_VWC + DaysT + Treated + Coccidiosis + PR, Ewe)
+
+
+logLik(model4) #Simple
+logLik(model5)
+
+lrtest(model5,model6)
+
+model6 <- glm.nb(Strongyle.epg ~ DaysT + Treated)
+summary(model6)
+lrtest(model3, model6)
+
+glmer.nb #Random effect negative binomial
+
+ggplot(data=Ewe, aes(x=Date., y=Nematodirus.epg, group = Date.)) +
+  geom_boxplot() +
+  scale_x_date(date_breaks = "1 month", date_labels="%b")
+
+
+lrtest(model6, model2)
+
+model7 <- glm.nb(Strongyle.epg ~ DaysT + Treated + TS2)
+summary(model7)
+
+lrtest(model7, model6)
+
+
+
+EweD <- read.csv("Ewe fecal egg count duplication.csv")
+summary(EweD)
+attach(EweD)
+str(EweD)
+plot(DaysT, Strongyle.epg)
+EweD$DaysT <- as.factor(EweD$DaysT)
+
+plot(DaysT, Strongyle.epg )
+model1 <- glm.nb(Strongyle.epg ~ DaysT, data=EweD)
+summary(model1)
+
+ggplot(data= Ewe, aes(x=DaysT, y=Strongyle.epg, group = DaysT)) +
+  geom_boxplot() +
+  xlab("Days since treatment") +
+  ylab("Strongyle (epg)") +
+  labs(title="Ewe strongyle FEC days since Cydectin treatment")
+
+model1 <- glm.nb(Strongyle.epg ~ DaysT, data=EweD)
+summary(model1)
+
+plot(Strongyle.epg, TS2)
+plot(TS2, Strongyle.epg)
+plot(COSMOS_VWC, Strongyle.epg)
+plot(PR, Strongyle.epg)
+
+install.Rtools(choose_version = TRUE, check = FALSE, GUI = TRUE,
+               page_with_download_url = "https://cran.r-project.org/bin/windows/Rtools/")
+
+EweA <- read.csv("Ewe treated with FECRT MOX.csv")
+str(EweA) 
+EweA$ID <- as.factor(EweA$ID)
+
+ggplot(data=EweA, aes(x= Date, y= Strongyle.epg, color = ID)) +
+  geom_point()
+
+model1 <- lm(Strongyle.epg ~ Date + ID, data=EweA)
+summary(model1)
+
+model2 <- lmer(Strongyle.epg ~ Date + (1|ID), data=EweA)
+summary(model2)
+
+model3 <- lm(Strongyle.epg ~ Date, data=EweA)
+summary(model3)
+
+lrtest(model2, model3)
+
+
+#Data analysis proper like
+
+model1 <- glm.nb(Strongyle.epg ~ DaysT + Average.TS2 + Treated, data=Ewe)
+summary(model1)
+
+model2 <- glm.nb(Strongyle.epg ~ Average.TS2 + Treated, data=Ewe)
+summary(model2)
+
+model3 <- glm.nb(Strongyle.epg ~ DaysT + Average.TS2, data=Ewe)
+summary(model3)
+
+model4 <- glm.nb(Strongyle.epg ~ Average.PR + Average.TS2, data=Ewe)
+summary(model4)
+
+model5 <- glm.nb(Strongyle.epg ~ DaysT + Average.PR + Average.TS2, data=Ewe)
+summary(model5)
+
+model6 <- glm.nb(Strongyle.epg ~ Treated + Average.TS2, data=Ewe)
+
+lrtest(model1, model2)
+lrtest(model1, model3)
+lrtest(model1, model4)
+lrtest(model1, model5)
+lrtest(model1, model6)
+lrtest(model1, model7)
+
+model7 <- glm.nb(Strongyle.epg ~ DaysT, data=Ewe)
+summary(model1)
